@@ -1,9 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeRandomNumber } from "../utils";
 
 function Ticker() {
   const [price, setPrice] = useState(0);
   const [color, setColor] = useState("black");
+
+  const prePriceRef = useRef(price);
+
+  useEffect(() => {
+    const prePrice = prePriceRef.current;
+
+    if(price > prePrice) {
+      setColor("green");
+    }
+    else if(price < prePrice) {
+      setColor("red")
+    }
+    else {
+      setColor("black")
+    };
+
+    prePriceRef.current = price;
+
+  }, [price])
 
   useEffect(() => {
     const id = setInterval(() => setPrice(makeRandomNumber), 1000);
